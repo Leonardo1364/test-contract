@@ -27,8 +27,8 @@ public class ClientController {
 
     @GetMapping
     @ResponseStatus(OK)
-    public Flux<ClientEntity> getAll() {
-        return Flux.just(ClientEntity.builder()
+    public Mono<ClientEntity> getAll() {
+        return Mono.just(ClientEntity.builder()
                 .id("id")
                 .name("name")
                 .age(20)
