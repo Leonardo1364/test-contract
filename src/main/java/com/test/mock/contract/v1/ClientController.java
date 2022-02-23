@@ -19,6 +19,7 @@ public class ClientController {
     @ResponseStatus(CREATED)
     public Mono<ClientEntity> save(ClientEntity client) {
         return Mono.just(ClientEntity.builder()
+                .id(client.getId())
                 .name(client.getName())
                 .age(client.getAge())
                 .gender(client.getGender())

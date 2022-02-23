@@ -8,23 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static com.test.mock.common.gender.Gender.MALE;
+import java.util.Objects;
 
-//@AutoConfigureWebTestClient
+import static com.test.mock.common.gender.Gender.MALE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
 class MockApplicationTests {
 
     @Autowired
     WebTestClient webTestClient;
-
-    /*@BeforeEach
-    void controller() throws Exception {
-        this.webTestClient = WebTestClient.bindToApplicationContext(applicationContext)
-                .configureClient()
-                .baseUrl("/v1/client/")
-                .build();
-    }*/
 
     @Test
     void getAll() throws Exception {
@@ -45,6 +39,35 @@ class MockApplicationTests {
                 .jsonPath("$.[0].name").isEqualTo(clientExpected.getName())
                 .jsonPath("$.[0].age").isEqualTo(clientExpected.getAge())
                 .jsonPath("$.[0].gender").isEqualTo(clientExpected.getGender());
+    }
+
+    @Test
+    void post_test() throws Exception {
+        ClientEntity clientExpected = ClientEntity.builder()
+                .id("id")
+                .name("name")
+                .age(20)
+                .gender(MALE)
+                .build();
+        ClientEntity clientActual = ClientEntity.builder()
+                .id("id")
+                .name("name")
+                .age(20)
+                .gender(MALE)
+                .build();
+
+        webTestClient.post()
+                .uri(uriBuilder -> uriBuilder.path("v1/client/").build())
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .expectBody(ClientEntity.class)
+                .consumeWith(entityExchangeResult -> {
+                    assertEquals(clientExpected.getId(), clientActual.getId());
+                    assertEquals(clientExpected.getName(), clientActual.getName());
+                    assertEquals(clientExpected.getAge(), clientActual.getAge());
+                    assertEquals(clientExpected.getGender(), clientActual.getGender());
+                });
     }
 
 }
