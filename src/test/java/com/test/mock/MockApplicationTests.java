@@ -40,8 +40,11 @@ class MockApplicationTests {
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful()
-                .expectBody(ClientEntity.class).isEqualTo(clientExpected);
-
+                .expectBody()
+                .jsonPath("$.[0].id").isEqualTo(clientExpected.getId())
+                .jsonPath("$.[0].name").isEqualTo(clientExpected.getName())
+                .jsonPath("$.[0].age").isEqualTo(clientExpected.getAge())
+                .jsonPath("$.[0].gender").isEqualTo(clientExpected.getGender());
     }
 
 }
