@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.util.Objects;
-
 import static com.test.mock.common.gender.Gender.MALE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,7 +19,7 @@ class MockApplicationTests {
     WebTestClient webTestClient;
 
     @Test
-    void getAll() throws Exception {
+    void whenRunningGetAllItShouldListAll() throws Exception {
         ClientEntity clientExpected = ClientEntity.builder()
                 .id("id")
                 .name("name")
@@ -38,11 +36,11 @@ class MockApplicationTests {
                 .jsonPath("$.[0].id").isEqualTo(clientExpected.getId())
                 .jsonPath("$.[0].name").isEqualTo(clientExpected.getName())
                 .jsonPath("$.[0].age").isEqualTo(clientExpected.getAge())
-                .jsonPath("$.[0].gender").isEqualTo(clientExpected.getGender());
+                .jsonPath("$.[0].gender").isEqualTo(clientExpected.getGender().toString());
     }
 
     @Test
-    void post_test() throws Exception {
+    void whenRunThePostItShouldSaveABody() throws Exception {
         ClientEntity clientExpected = ClientEntity.builder()
                 .id("id")
                 .name("name")
